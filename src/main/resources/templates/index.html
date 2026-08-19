@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/script.js?v=1.0.1" defer></script>
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>URL Shortener</h1>
+        <p class="subtitle">
+            Shorten, Protect & Share Links Securely
+        </p>
+
+        <form id="urlForm">
+
+            <label>Original URL</label>
+            <input
+                    id="originalUrl"
+                    type="url"
+                    placeholder="https://example.com"
+            >
+
+            <label>Custom Alias (Optional)</label>
+            <input
+                    id="shortCode"
+                    type="text"
+                    placeholder="my-link"
+            >
+
+            <label>Password (Optional)</label>
+            <input
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+            >
+
+            <label>Expiration Date (Optional)</label>
+            <input
+                    id="expiryDate"
+                    type="date"
+            >
+
+            <button type="submit">
+                Shorten URL
+            </button>
+
+            <p id="successFeedback" style="display:none; color:#22c55e; margin-top:15px; text-align:center; font-weight:bold;">Created!</p>
+
+        </form>
+
+        <div id="errorMessage" class="error-message" style="display:none; color:#ff6b6b; margin-top:15px; text-align:center; font-weight:bold;"></div>
+
+    </div>
+
+    <div id="resultCard" class="result-card" style="display:none;">
+
+    <h2>✅ Short URL Created</h2>
+
+    <input
+            type="text"
+            id="generatedUrl"
+            readonly>
+
+    <div class="button-group">
+
+        <button type="button" id="copyBtn">
+            📋 Copy
+        </button>
+
+        <button type="button" id="qrBtn">
+            📱 QR Code
+        </button>
+
+    </div>
+    <div id="qrContainer" style="display:none; margin-top:20px; text-align:center;">
+
+    <img id="qrImage" width="200">
+
+</div>
+
+</div>
+<div id="passwordModal" class="modal" style="display:none;">
+
+    <div class="modal-content">
+
+        <h2>🔒 Password Required</h2>
+
+        <p>This link is password protected.</p>
+
+        <input
+                type="password"
+                id="modalPassword"
+                placeholder="Enter password">
+
+        <button id="unlockBtn">
+            Unlock
+        </button>
+
+        <p
+            id="passwordError"
+            style="display:none;color:#ff6b6b;margin-top:15px;">
+            Incorrect Password
+        </p>
+
+    </div>
+
+</div>
+</body>
+</html>
