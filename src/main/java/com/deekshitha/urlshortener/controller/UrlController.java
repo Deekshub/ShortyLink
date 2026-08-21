@@ -59,6 +59,9 @@ public class UrlController {
             return ResponseEntity.ok(response);
         }
 
+        // Increment click count
+        urlService.incrementClicks(url);
+
         // Otherwise redirect immediately
         return ResponseEntity
                 .status(302)
@@ -82,8 +85,34 @@ public class UrlController {
 
         UrlMapping url = urlService.getByShortCode(shortCode);
 
+        // Increment click count
+        urlService.incrementClicks(url);
+
         Map<String, Object> response = new HashMap<>();
         response.put("redirectUrl", url.getOriginalUrl());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/dashboard")
+    public ResponseEntity<Map<String, Object>> getDashboardData() {
+        java.util.List<UrlMapping> links = urlService.getAllLinks();
+
+        long activeLinks = links.size();
+        long totalClicks = links.stream().mapToLong(UrlMapping::getClickCount).sum();
+        double averageClicks = activeLinks > 0 ? (double) totalClicks / activeLinks : 0.0;
+
+        // Round to 1 decimal place
+        averageClicks = Math.round(averageClicks * 10.0) / 10.0;
+
+        Map<String, Object> metrics = new HashMap<>();
+        metrics.put("activeLinks", activeLinks);
+        metrics.put("totalClicks", totalClicks);
+        metrics.put("averageClicks", averageClicks);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("metrics", metrics);
+        response.put("links", links);
 
         return ResponseEntity.ok(response);
     }

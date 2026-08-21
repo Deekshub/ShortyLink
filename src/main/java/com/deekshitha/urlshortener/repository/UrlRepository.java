@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface UrlRepository
         extends JpaRepository<UrlMapping, Long> {
                 Optional<UrlMapping> findByShortCode(String shortCode);
+                java.util.List<UrlMapping> findAllByOrderByCreatedAtDesc();
 
 }

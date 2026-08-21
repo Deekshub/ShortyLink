@@ -82,6 +82,9 @@ public class UrlService {
 
     return urlRepository.save(url);
 }
+public java.util.List<UrlMapping> getAllLinks() {
+    return urlRepository.findAllByOrderByCreatedAtDesc();
+}
 public UrlMapping getByShortCode(String shortCode) {
 
     return urlRepository
@@ -103,6 +106,13 @@ public boolean verifyPassword(String shortCode, String password) {
     return passwordEncoder.matches(
         password,
         url.getPassword()
-);
+    );
+}
+
+public void incrementClicks(UrlMapping url) {
+    url.setClickCount(url.getClickCount() + 1);
+    url.setLastAccessed(java.time.LocalDateTime.now());
+    urlRepository.save(url);
 }
 }
+

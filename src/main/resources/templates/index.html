@@ -3,113 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Shortener</title>
-
+    <title>ShortyLink | Premium URL Shortener</title>
     <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/script.js?v=1.0.1" defer></script>
+    <script src="/js/script.js?v=1.0.2" defer></script>
 </head>
 <body>
 
-    <div class="container">
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <span>Shorty</span>
+        </div>
+        <div class="nav-links">
+            <span class="nav-link active">Dashboard</span>
+            <a href="https://github.com/Deekshub/ShortyLink" target="_blank" class="nav-link github-btn">
+                <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                GitHub
+            </a>
+        </div>
+    </header>
 
-        <h1>URL Shortener</h1>
-        <p class="subtitle">
-            Shorten, Protect & Share Links Securely
-        </p>
+    <!-- Main Container -->
+    <main class="dashboard-content">
+        
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1>Shorten. <span class="highlight">Share.</span></h1>
+            <p class="subtitle">ShortyLink helps you track and share your links securely.</p>
+        </section>
 
-        <form id="urlForm">
+        <!-- Form/Shortener Bar -->
+        <section class="shortener-bar-container">
+            <form id="urlForm">
+                <div class="input-row">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                        <input id="originalUrl" type="url" placeholder="Paste a link to shorten..." required>
+                    </div>
+                    <button type="submit" class="btn-shorten">Shorten</button>
+                </div>
 
-            <label>Original URL</label>
-            <input
-                    id="originalUrl"
-                    type="url"
-                    placeholder="https://example.com"
-            >
+                <div class="advanced-toggle-wrapper">
+                    <button type="button" id="toggleAdvanced" class="btn-toggle-advanced">
+                        <span>Advanced Options</span>
+                        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                </div>
 
-            <label>Custom Alias (Optional)</label>
-            <input
-                    id="shortCode"
-                    type="text"
-                    placeholder="my-link"
-            >
+                <div id="advancedOptions" class="advanced-options collapsed">
+                    <div class="advanced-grid">
+                        <div class="form-group">
+                            <label for="shortCode">Custom Alias (Optional)</label>
+                            <input id="shortCode" type="text" placeholder="e.g. my-custom-link">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password (Optional)</label>
+                            <input id="password" type="password" placeholder="Enter password...">
+                        </div>
+                        <div class="form-group">
+                            <label for="expiryDate">Expiration Date (Optional)</label>
+                            <input id="expiryDate" type="date">
+                        </div>
+                    </div>
+                </div>
+                
+                <p id="successFeedback" style="display:none;" class="success-banner">Created!</p>
+            </form>
+            
+            <div id="errorMessage" style="display:none;" class="error-banner"></div>
+        </section>
 
-            <label>Password (Optional)</label>
-            <input
-                    id="password"
-                    type="password"
-                    placeholder="Password"
-            >
+        <!-- Metrics Section -->
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-info">
+                    <span class="metric-label">Active Links</span>
+                    <h2 id="metricActiveLinks" class="metric-value">-</h2>
+                </div>
+                <div class="metric-icon green">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-info">
+                    <span class="metric-label">Total Clicks</span>
+                    <h2 id="metricTotalClicks" class="metric-value">-</h2>
+                </div>
+                <div class="metric-icon green">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-info">
+                    <span class="metric-label">Average Clicks</span>
+                    <h2 id="metricAverageClicks" class="metric-value">-</h2>
+                </div>
+                <div class="metric-icon green">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </div>
+            </div>
+        </section>
 
-            <label>Expiration Date (Optional)</label>
-            <input
-                    id="expiryDate"
-                    type="date"
-            >
+        <!-- Recent Links Section -->
+        <section class="recent-links-section">
+            <div class="recent-links-card">
+                <h3>Recent Links</h3>
+                <div id="linksList" class="links-list">
+                    <!-- Loaded dynamically via script.js -->
+                    <p class="empty-state">Loading links...</p>
+                </div>
+            </div>
+        </section>
 
-            <button type="submit">
-                Shorten URL
-            </button>
+    </main>
 
-            <p id="successFeedback" style="display:none; color:#22c55e; margin-top:15px; text-align:center; font-weight:bold;">Created!</p>
-
-        </form>
-
-        <div id="errorMessage" class="error-message" style="display:none; color:#ff6b6b; margin-top:15px; text-align:center; font-weight:bold;"></div>
-
+    <!-- Password Modal -->
+    <div id="passwordModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>🔒 Password Required</h2>
+            <p>This link is password protected.</p>
+            <input type="password" id="modalPassword" placeholder="Enter password">
+            <button id="unlockBtn">Unlock</button>
+            <p id="passwordError" style="display:none;color:#ff6b6b;margin-top:15px;">Incorrect Password</p>
+        </div>
     </div>
 
-    <div id="resultCard" class="result-card" style="display:none;">
-
-    <h2>✅ Short URL Created</h2>
-
-    <input
-            type="text"
-            id="generatedUrl"
-            readonly>
-
-    <div class="button-group">
-
-        <button type="button" id="copyBtn">
-            📋 Copy
-        </button>
-
-        <button type="button" id="qrBtn">
-            📱 QR Code
-        </button>
-
-    </div>
-    <div id="qrContainer" style="display:none; margin-top:20px; text-align:center;">
-
-    <img id="qrImage" width="200">
-
-</div>
-
-</div>
-<div id="passwordModal" class="modal" style="display:none;">
-
-    <div class="modal-content">
-
-        <h2>🔒 Password Required</h2>
-
-        <p>This link is password protected.</p>
-
-        <input
-                type="password"
-                id="modalPassword"
-                placeholder="Enter password">
-
-        <button id="unlockBtn">
-            Unlock
-        </button>
-
-        <p
-            id="passwordError"
-            style="display:none;color:#ff6b6b;margin-top:15px;">
-            Incorrect Password
-        </p>
-
-    </div>
-
-</div>
 </body>
 </html>
